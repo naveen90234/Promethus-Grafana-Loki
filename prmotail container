@@ -1,0 +1,13 @@
+promtail:
+  image: grafana/promtail:latest
+  container_name: openchair-promtail-staging
+  volumes:
+    - /var/log:/var/log
+    - /var/lib/docker/containers:/var/lib/docker/containers:ro
+    - ./monitoring/promtail.yml:/etc/promtail/config.yml:ro
+    - /var/run/docker.sock:/var/run/docker.sock  # <--- THIS IS REQUIRED
+  command:
+    - "-config.file=/etc/promtail/config.yml"
+  networks:
+    - monitoring-network
+  restart: unless-stopped
